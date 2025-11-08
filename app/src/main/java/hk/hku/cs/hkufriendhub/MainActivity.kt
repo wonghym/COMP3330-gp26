@@ -7,12 +7,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+import androidx.recyclerview.widget.RecyclerView;
+
 class MainActivity : AppCompatActivity() {
     private lateinit var navBar: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // navigation bar
         loadFragment(MainFragment())
         navBar = findViewById<BottomNavigationView>(R.id.nav_bar)
         navBar.setOnItemSelectedListener { item ->
