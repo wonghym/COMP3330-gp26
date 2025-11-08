@@ -5,17 +5,87 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
+import android.content.Intent
+import android.util.Log
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONArray
+import org.json.JSONObject
+
 class MainFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
+    private lateinit var recyclerView: RecyclerView
+    private val postList = ArrayList<PostModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        recyclerView = view.findViewById<RecyclerView>(R.id.main_recyclerView)
+
+        getPosts()
+
+        return view
     }
 
+    fun getPosts() {
+        val url = "http://192.168.1.191:3001/api/post";
+        val jsonArrayRequest = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            {
+                response ->
+                for (i in 0 until response.length()) {
+                    val jsonObject = response.getJSONObject(i)
+                    val user = jsonObject.getJSONObject("user").getString("name")
+                    val date = jsonObject.getString("date")
+                    val title = jsonObject.getString("title")
+                    val text = jsonObject.getString("content")
+
+                    val hashtags = ArrayList<String>();
+                    val hashtagsList = jsonObject.getJSONArray("hashtags")
+                    for (j in 0 until hashtagsList.length()) {
+                        hashtags.add(hashtagsList[j].toString())
+                    }
+
+                    var curstat = jsonObject.getString("curstat")
+                    var maxstat = jsonObject.getString("maxstat")
+                    val stat = if (maxstat == "0") "--" else "$curstat/$maxstat"
+
+                    val postItem = PostModel(
+                        username = jsonObject.getJSONObject("user").getString("name"),
+                        timestamp = jsonObject.getString("date"),
+                        title = jsonObject.getString("title"),
+                        text = jsonObject.getString("content"),
+                        hashtags = hashtags,
+                        groupStat = stat
+                    )
+                    postList.add(postItem)
+                }
+//                Log.d("Response Parsing pre", postList.toString())
+                updateUI()
+            },
+            {error ->
+                Log.e("MainFragmentError", error.toString())
+            }
+        )
+        Volley.newRequestQueue(context).add(jsonArrayRequest);
+    }
+
+    fun updateUI() {
+//        Log.d("Response Parsing", postList.toString())
+
+        val postAdapter = PostAdapter(postList)
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = postAdapter
+    }
 }

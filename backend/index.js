@@ -25,6 +25,6 @@ app.use("/api/login", loginRouter);
 app.use(middlewares.errorHandler);
 app.use(middlewares.unknownEndpoint);
 
-app.listen(config.PORT, () => {
+app.listen(config.PORT, (host = "0.0.0.0"), () => {
   logger.info(`Server running on port ${config.PORT}`);
 });
