@@ -52,6 +52,15 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/post_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Title"
+            android:textStyle="bold"
+            android:textSize="17sp"/>
+
+        <TextView
             android:id="@+id/post_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
