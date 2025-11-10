@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="subtext">#282828</color>
     <color name="buttons">#2267e0</color>
+    <color name="grey">#CCCACA</color>
 </resources>

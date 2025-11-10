@@ -39,6 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Test"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -46,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2 hours ago"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textColor="@color/subtext" />
             </LinearLayout>
         </LinearLayout>
@@ -58,7 +59,7 @@
             android:layout_marginTop="8dp"
             android:text="Title"
             android:textStyle="bold"
-            android:textSize="17sp"/>
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/post_text"
@@ -72,22 +73,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/post_hashtag_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal" />
+                app:chipSpacingHorizontal="10dp">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#sample"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    app:chipMinHeight="24dp"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
                 android:id="@+id/post_group_stat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1/4"
-                android:textSize="12sp"
-                android:layout_gravity="end"/>
+                android:textSize="16sp"
+                android:layout_marginEnd="10dp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
