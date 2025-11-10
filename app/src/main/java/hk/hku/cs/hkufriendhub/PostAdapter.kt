@@ -26,7 +26,6 @@ class PostAdapter(val postList: ArrayList<PostModel>) : RecyclerView.Adapter<Pos
         return postList.size;
     }
 
-
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bindItems(post: PostModel) {
             itemView.findViewById<TextView>(R.id.post_username).text = post.username;

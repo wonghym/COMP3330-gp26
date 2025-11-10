@@ -17,20 +17,28 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import org.json.JSONArray
-import org.json.JSONObject
 
 class MainFragment : Fragment() {
-
     private lateinit var recyclerView: RecyclerView
     private val postList = ArrayList<PostModel>()
+    private lateinit var postAdapter: PostAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
+        val addPostButton = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.main_add_post)
+
         recyclerView = view.findViewById<RecyclerView>(R.id.main_recyclerView)
+
+        addPostButton.setOnClickListener {
+            (activity as? MainActivity)?.loadFragment(PostDetailFragment(), true)
+        }
+
+        postAdapter = PostAdapter(postList)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = postAdapter
 
         getPosts()
 
@@ -38,11 +46,14 @@ class MainFragment : Fragment() {
     }
 
     fun getPosts() {
-        val url = "http://192.168.1.191:3001/api/post";
+        val url = "http://10.0.2.2:3001/api/post"
         val jsonArrayRequest = JsonArrayRequest(
             Request.Method.GET, url, null,
             {
                 response ->
+
+                postList.clear()
+
                 for (i in 0 until response.length()) {
                     val jsonObject = response.getJSONObject(i)
                     val user = jsonObject.getJSONObject("user").getString("name")
@@ -81,11 +92,6 @@ class MainFragment : Fragment() {
     }
 
     fun updateUI() {
-//        Log.d("Response Parsing", postList.toString())
-
-        val postAdapter = PostAdapter(postList)
-
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = postAdapter
+        postAdapter.notifyDataSetChanged()
     }
 }

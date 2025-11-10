@@ -17,20 +17,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // navigation bar
-        loadFragment(MainFragment())
+        loadFragment(MainFragment(), false)
         navBar = findViewById<BottomNavigationView>(R.id.nav_bar)
         navBar.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_main -> {
-                    loadFragment(MainFragment())
+                    loadFragment(MainFragment(), false)
                     true
                 }
                 R.id.nav_forum -> {
-                    loadFragment(ForumFragment())
+                    loadFragment(ForumFragment(), false)
                     true
                 }
                 R.id.nav_profile -> {
-                    loadFragment(ProfileFragment())
+                    loadFragment(ProfileFragment(), false)
                     true
                 }
                 else -> false
@@ -38,10 +38,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun loadFragment(fragment: Fragment){
+    fun loadFragment(fragment: Fragment, addToBackStack: Boolean){
         val manager: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = manager.beginTransaction()
-        ft.replace(R.id.frame_container, fragment)
+        if (addToBackStack) {
+            ft.addToBackStack(null)
+        }
+        if (fragment != null) {
+            ft.replace(R.id.frame_container, fragment)
+        }
         ft.commitAllowingStateLoss()
     }
 }
