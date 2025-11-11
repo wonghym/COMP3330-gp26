@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 
 class MainFragment : Fragment() {
@@ -35,6 +34,9 @@ class MainFragment : Fragment() {
         addPostButton.setOnClickListener {
             (activity as? MainActivity)?.loadFragment(PostDetailFragment(), true)
         }
+
+        val mainActivity = activity as? MainActivity
+        addPostButton.visibility = if (mainActivity != null && mainActivity.isLoggedIn) View.VISIBLE else View.GONE
 
         postAdapter = PostAdapter(postList)
         recyclerView.layoutManager = LinearLayoutManager(context)

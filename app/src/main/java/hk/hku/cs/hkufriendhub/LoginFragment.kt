@@ -48,12 +48,19 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
         Log.d("LoginFragment", "Login successful: $response")
 
         Toast.makeText(requireContext(), "Login Successful!", Toast.LENGTH_SHORT).show()
-        (activity as? MainActivity)?.loadFragment(ProfileFragment(), false)
+
+        val mainActivity = activity as? MainActivity
+        if (mainActivity != null) {
+            mainActivity.isLoggedIn = true
+            mainActivity.loadFragment(ProfileFragment(), false)
+        }
         loginButton.isEnabled = true
     }
 
     override fun onError(error: VolleyError) {
         Log.e("LoginFragment", "Login error: ${error.message}")
+
+        passwordInput.text?.clear()
 
         Toast.makeText(requireContext(), "Login failed: Invalid username or password", Toast.LENGTH_SHORT).show()
         loginButton.isEnabled = true
