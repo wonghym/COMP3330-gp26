@@ -6,21 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import android.content.Intent
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
-
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), OnPostClickListener {
     private lateinit var recyclerView: RecyclerView
     private val postList = ArrayList<PostModel>()
     private lateinit var postAdapter: PostAdapter
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,21 +27,36 @@ class MainFragment : Fragment() {
         val addPostButton = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.main_add_post)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.main_recyclerView)
+        swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.main_swipe_refresh)
 
         addPostButton.setOnClickListener {
-            (activity as? MainActivity)?.loadFragment(PostDetailFragment(), true)
+            (activity as? MainActivity)?.loadFragment(AddDetailFragment(), true)
         }
 
         val mainActivity = activity as? MainActivity
         addPostButton.visibility = if (mainActivity != null && mainActivity.isLoggedIn) View.VISIBLE else View.GONE
 
-        postAdapter = PostAdapter(postList)
+        swipeRefreshLayout.setOnRefreshListener {
+            getPosts()
+        }
+
+        postAdapter = PostAdapter(postList, this)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = postAdapter
 
+        swipeRefreshLayout.isRefreshing = true
         getPosts()
 
         return view
+    }
+
+    override fun onPostClick(post: PostModel) {
+        val postDetailFragment = PostDetailFragment()
+        val bundle = Bundle()
+        bundle.putSerializable("POST_DATA", post)
+        postDetailFragment.arguments = bundle
+
+        (activity as? MainActivity)?.loadFragment(postDetailFragment, true)
     }
 
     fun getPosts() {
@@ -71,7 +83,7 @@ class MainFragment : Fragment() {
 
                     var curstat = jsonObject.getString("curstat")
                     var maxstat = jsonObject.getString("maxstat")
-                    val stat = if (maxstat == "0") "--" else "$curstat/$maxstat"
+                    val stat = if (maxstat == "0") "--/--" else "$curstat/$maxstat"
 
                     val postItem = PostModel(
                         username = jsonObject.getJSONObject("user").getString("name"),
@@ -85,9 +97,12 @@ class MainFragment : Fragment() {
                 }
 //                Log.d("Response Parsing pre", postList.toString())
                 updateUI()
+
+                swipeRefreshLayout.isRefreshing = false
             },
             {error ->
                 Log.e("MainFragmentError", error.toString())
+                swipeRefreshLayout.isRefreshing = false
             }
         )
         Volley.newRequestQueue(context).add(jsonArrayRequest);

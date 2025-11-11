@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
-class PostAdapter(val postList: ArrayList<PostModel>) : RecyclerView.Adapter<PostAdapter.ViewHolder> () {
+interface OnPostClickListener {
+    fun onPostClick(post: PostModel)
+}
+
+class PostAdapter(val postList: ArrayList<PostModel>, val clickListener: OnPostClickListener) : RecyclerView.Adapter<PostAdapter.ViewHolder> () {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.card_post, parent, false);
-        return ViewHolder(v)
+        return ViewHolder(v, clickListener)
     }
 
     override fun onBindViewHolder(
@@ -28,14 +32,24 @@ class PostAdapter(val postList: ArrayList<PostModel>) : RecyclerView.Adapter<Pos
         return postList.size;
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, listener: OnPostClickListener): RecyclerView.ViewHolder(itemView) {
+
+        private var currentPost: PostModel? = null
+        init{
+            itemView.setOnClickListener {
+                currentPost?.let {
+                    post -> listener.onPostClick(post)
+                }
+            }
+        }
         fun bindItems(post: PostModel) {
+            currentPost = post
+
             itemView.findViewById<TextView>(R.id.post_username).text = post.username;
             itemView.findViewById<TextView>(R.id.post_time).text = TimeUtils.getFormattedDate(post.timestamp);
             itemView.findViewById<TextView>(R.id.post_title).text = post.title;
             itemView.findViewById<TextView>(R.id.post_text).text = post.text;
             itemView.findViewById<TextView>(R.id.post_group_stat).text = post.groupStat;
-            //            itemView.findViewById<TextView>(R.id.post_hashtag_container)
 
             val hashtagContainer = itemView.findViewById<ChipGroup>(R.id.post_hashtag_container)
             hashtagContainer.removeAllViews()
