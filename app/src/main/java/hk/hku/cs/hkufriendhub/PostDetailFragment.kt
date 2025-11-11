@@ -7,20 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 
 class PostDetailFragment : Fragment() {
 
     private lateinit var post: PostModel
-    private lateinit var backButton: ImageButton
+    private lateinit var backButton: ImageView
     private lateinit var title: TextView
     private lateinit var username: TextView
     private lateinit var time: TextView
     private lateinit var description: TextView
-    private lateinit var hashtagContainer: ChipGroup
     private lateinit var joinButton: Button
 
     override fun onCreateView(
@@ -33,12 +30,12 @@ class PostDetailFragment : Fragment() {
             post = it.getSerializable("POST_DATA") as PostModel
         }
 
-        backButton = view.findViewById(R.id.postDetail_back_button)
-        title = view.findViewById(R.id.postDetail_title)
-        username = view.findViewById(R.id.postDetail_username)
-        time = view.findViewById(R.id.postDetail_time)
-        description = view.findViewById(R.id.postDetail_description)
-        joinButton = view.findViewById(R.id.postDetail_join_button)
+        backButton = view.findViewById<ImageView>(R.id.postDetail_back_button)
+        title = view.findViewById<TextView>(R.id.postDetail_title)
+        username = view.findViewById<TextView>(R.id.postDetail_username)
+        time = view.findViewById<TextView>(R.id.postDetail_time)
+        description = view.findViewById<TextView>(R.id.postDetail_description)
+        joinButton = view.findViewById<Button>(R.id.postDetail_join_button)
 
         backButton.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()

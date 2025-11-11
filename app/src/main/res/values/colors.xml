@@ -5,4 +5,5 @@
     <color name="subtext">#282828</color>
     <color name="buttons">#2267e0</color>
     <color name="grey">#CCCACA</color>
+    <color name="darkgrey">#525151</color>
 </resources>

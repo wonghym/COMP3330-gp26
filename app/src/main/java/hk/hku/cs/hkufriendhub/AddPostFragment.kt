@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -19,9 +19,9 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
 
-class AddDetailFragment : Fragment() {
+class AddPostFragment : Fragment() {
 
-    private lateinit var backButton: ImageButton
+    private lateinit var backButton: ImageView
     private lateinit var titleInput: EditText
     private lateinit var descriptionInput: EditText
     private lateinit var hashtag1Input: EditText
@@ -37,14 +37,14 @@ class AddDetailFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_add_post, container, false)
 
-        backButton = view.findViewById<ImageButton>(R.id.addPost_back_button)
-        titleInput = view.findViewById(R.id.addPost_title_input)
-        descriptionInput = view.findViewById(R.id.addPost_text_input)
-        hashtag1Input = view.findViewById(R.id.addPost_hashtag1)
-        hashtag2Input = view.findViewById(R.id.addPost_hashtag2)
-        hashtag3Input = view.findViewById(R.id.addPost_hashtag3)
-        maxStudentsInput = view.findViewById(R.id.addPost_gpsize_input)
-        submitButton = view.findViewById(R.id.addPost_submit_button)
+        backButton = view.findViewById<ImageView>(R.id.addPost_back_button)
+        titleInput = view.findViewById<EditText>(R.id.addPost_title_input)
+        descriptionInput = view.findViewById<EditText>(R.id.addPost_text_input)
+        hashtag1Input = view.findViewById<EditText>(R.id.addPost_hashtag1)
+        hashtag2Input = view.findViewById<EditText>(R.id.addPost_hashtag2)
+        hashtag3Input = view.findViewById<EditText>(R.id.addPost_hashtag3)
+        maxStudentsInput = view.findViewById<AutoCompleteTextView>(R.id.addPost_gpsize_input)
+        submitButton = view.findViewById<Button>(R.id.addPost_submit_button)
 
         setupDropdown()
 

@@ -71,6 +71,29 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_name_label"
         app:layout_constraintBottom_toBottomOf="@+id/profile_bio_label"/>
 
+    <ImageView
+        android:id="@+id/profile_info_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:contentDescription="Info"
+        android:src="@drawable/ic_info_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_bio_input"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_info" />
+
+    <TextView
+        android:id="@+id/profile_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:text="Tap on name or bio to edit"
+        android:textSize="12sp"
+        android:textColor="@color/darkgrey"
+        app:layout_constraintTop_toBottomOf="@+id/profile_bio_input"
+        app:layout_constraintStart_toEndOf="@+id/profile_info_icon" />
+
     <Button
         android:id="@+id/profile_logout_button"
         android:layout_width="wrap_content"
@@ -79,5 +102,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

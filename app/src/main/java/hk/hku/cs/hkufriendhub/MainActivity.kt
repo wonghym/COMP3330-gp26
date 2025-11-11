@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val SHARED_PREFS = "SHARED_PREFS"
         const val USER_TOKEN = "USER_TOKEN"
-        const val USER_NAME = "USER_NAME"
+        const val USER_USERNAME = "USER_USERNAME"
         const val USER_ID = "USER_ID"
     }
 
@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         useEffectUserToken()
 
-//        Log.d("MainActivityUser", getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(USER_NAME, null).toString())
-//        Log.d("MainActivityUser", getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(USER_ID, null).toString())
+        Log.d("MainActivityUser", getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(USER_ID, null).toString())
+        Log.d("MainActivityUser", getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(USER_USERNAME, null).toString())
 
         // navigation bar
         loadFragment(MainFragment(), false)
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             UserUtils.clearSavedData(this)
             return
         }
-//        Log.d("payload", payload.toString())
+        Log.d("MainActivityUser", payload.toString())
         this.isLoggedIn = true
     }
 

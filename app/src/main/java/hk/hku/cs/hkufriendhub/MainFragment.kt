@@ -30,7 +30,7 @@ class MainFragment : Fragment(), OnPostClickListener {
         swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.main_swipe_refresh)
 
         addPostButton.setOnClickListener {
-            (activity as? MainActivity)?.loadFragment(AddDetailFragment(), true)
+            (activity as? MainActivity)?.loadFragment(AddPostFragment(), true)
         }
 
         val mainActivity = activity as? MainActivity

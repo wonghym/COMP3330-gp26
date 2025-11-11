@@ -14,6 +14,11 @@ object UserUtils {
         fun onError(error: VolleyError)
     }
 
+    interface UserCallBack {
+        fun onSuccess(response: JSONObject)
+        fun onError(error: VolleyError)
+    }
+
     fun loginHandler(username: String, password: String, context: Context, callback: LoginCallback) {
         val url = "http://10.0.2.2:3001/api/login"
         val requestBody = JSONObject()
@@ -42,9 +47,27 @@ object UserUtils {
         val editor = prefs.edit()
 
         editor.putString(MainActivity.USER_TOKEN, json.getString("token"))
-        editor.putString(MainActivity.USER_NAME, json.getString("name"))
+        editor.putString(MainActivity.USER_USERNAME, json.getString("username"))
         editor.putString(MainActivity.USER_ID, json.getString("id"))
         editor.apply()
+    }
+
+    fun getUserData(context: Context, id: String, callback: UserCallBack) {
+        val url = "http://10.0.2.2:3001/api/user/$id"
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                Log.d("UserUtils", response.toString())
+                callback.onSuccess(response)
+            },
+            { error ->
+                Log.e("UserUtils", error.toString())
+                callback.onError(error)
+            }
+        )
+
+        Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
 
     fun clearSavedData(context: Context) {
