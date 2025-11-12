@@ -42,10 +42,10 @@ class SignUpFragment : Fragment() {
         }
 
         signupButton.setOnClickListener {
-            val username = usernameInput.text.toString()
-            val name = nameInput.text.toString()
-            val password = passwordInput.text.toString()
-            val confirmPassword = confirmPasswordInput.text.toString()
+            val username = usernameInput.text.toString().trim()
+            val name = nameInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
+            val confirmPassword = confirmPasswordInput.text.toString().trim()
 
 
             if (inputValidation(username, name, password, confirmPassword)) {

@@ -41,8 +41,8 @@ class EditProfileFragment : Fragment() {
         }
 
         saveButton.setOnClickListener {
-            val name = nameInput.text.toString()
-            val bio = bioInput.text.toString()
+            val name = nameInput.text.toString().trim()
+            val bio = bioInput.text.toString().trim()
 
             if (inputValidation(name, bio)) {
                 saveButton.isEnabled = false

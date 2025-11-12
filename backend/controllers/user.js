@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const userRouter = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
-const mongoose = require("mongoose");
 
 userRouter.get("/", async (request, response) => {
   const users = await User.find({}).populate("posts").populate("joinedPost");
@@ -82,51 +81,29 @@ userRouter.put("/:id", async (request, response) => {
 
 userRouter.delete("/:id", async (request, response) => {
   const userId = request.params.id;
+  const user = await User.findByIdAndDelete(userId);
 
-  const session = await mongoose.startSession();
-
-  try {
-    session.startTransaction();
-
-    const user = await User.findById(userId).session(session);
-
-    if (!user) {
-      await session.abortTransaction();
-      session.endSession();
-      return response.status(404).json({ error: "User not found." });
-    }
-
-    if (user.posts && user.posts.length > 0) {
-      const postsToDelete = user.posts;
-      await User.updateMany(
-        { joinedPost: { $in: postsToDelete } },
-        { $pull: { joinedPost: { $in: postsToDelete } } }
-      );
-
-      await Post.deleteMany({ _id: { $in: postsToDelete } }, { session });
-    }
-
-    if (user.joinedPost && user.joinedPost.length > 0) {
-      await Post.updateMany(
-        { _id: { $in: user.joinedPost } },
-        { $pull: { joinedUser: userId } },
-        { session }
-      );
-    }
-
-    await User.findByIdAndDelete(userId).session(session);
-
-    await session.commitTransaction();
-
-    response.status(204).end();
-  } catch (error) {
-    await session.abortTransaction();
-    return response.status(500).json({
-      error: "Server Error",
-      details: error.message,
-    });
-  } finally {
-    session.endSession();
+  if (!user) {
+    return response.status(404).json({ error: "User not found." });
   }
+
+  if (user.posts && user.posts.length > 0) {
+    const postsToDelete = user.posts;
+    await User.updateMany(
+      { joinedPost: { $in: postsToDelete } },
+      { $pull: { joinedPost: { $in: postsToDelete } } }
+    );
+
+    await Post.deleteMany({ _id: { $in: postsToDelete } });
+  }
+
+  if (user.joinedPost && user.joinedPost.length > 0) {
+    await Post.updateMany(
+      { _id: { $in: user.joinedPost } },
+      { $pull: { joinedUser: userId } }
+    );
+  }
+
+  response.status(204).end();
 });
 module.exports = userRouter;
