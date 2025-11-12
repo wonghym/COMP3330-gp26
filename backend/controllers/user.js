@@ -26,6 +26,15 @@ userRouter.get("/:id", async (request, response) => {
   }
 });
 
+userRouter.put("/:id", async (request, response) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    request.params.id,
+    { ...request.body },
+    { new: true }
+  );
+  response.status(201).json(updatedUser).end;
+});
+
 userRouter.post("/", async (request, response) => {
   const { username, name, password } = request.body;
 

@@ -19,6 +19,27 @@ object UserUtils {
         fun onError(error: VolleyError)
     }
 
+    interface PutCallBack {
+        fun onSuccess(response: JSONObject)
+        fun onError(error: VolleyError)
+    }
+
+    fun saveLoginData(context: Context, json: JSONObject) {
+        val prefs = context.getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        editor.putString(MainActivity.USER_TOKEN, json.getString("token"))
+        editor.putString(MainActivity.USER_USERNAME, json.getString("username"))
+        editor.putString(MainActivity.USER_ID, json.getString("id"))
+        editor.apply()
+    }
+
+    fun clearSavedData(context: Context) {
+        val prefs = context.getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+        prefs.edit().clear().apply()
+        Log.d("UserUtils", "Cleared all saved user data")
+    }
+
     fun loginHandler(username: String, password: String, context: Context, callback: LoginCallback) {
         val url = "http://10.0.2.2:3001/api/login"
         val requestBody = JSONObject()
@@ -42,16 +63,6 @@ object UserUtils {
         Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
 
-    fun saveLoginData(context: Context, json: JSONObject) {
-        val prefs = context.getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-
-        editor.putString(MainActivity.USER_TOKEN, json.getString("token"))
-        editor.putString(MainActivity.USER_USERNAME, json.getString("username"))
-        editor.putString(MainActivity.USER_ID, json.getString("id"))
-        editor.apply()
-    }
-
     fun getUserData(context: Context, id: String, callback: UserCallBack) {
         val url = "http://10.0.2.2:3001/api/user/$id"
 
@@ -70,10 +81,22 @@ object UserUtils {
         Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
 
-    fun clearSavedData(context: Context) {
-        val prefs = context.getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
-        prefs.edit().clear().apply()
-        Log.d("UserUtils", "Cleared all saved user data")
+    fun putUserData(name: String, bio: String, context: Context, id: String, callback: PutCallBack) {
+        var url = "http://10.0.2.2:3001/api/user/$id"
+        val requestBody = JSONObject()
+        requestBody.put("name", name)
+        requestBody.put("bio", bio)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.PUT, url, requestBody,
+            { response ->
+                callback.onSuccess(response)
+            },
+            { error ->
+                callback.onError(error)
+            }
+        )
+        Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
 
 }
