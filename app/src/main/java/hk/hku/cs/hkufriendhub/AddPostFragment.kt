@@ -69,6 +69,33 @@ class AddPostFragment : Fragment() {
         maxStudentsInput.setAdapter(gpsizeAdapter)
     }
 
+    private fun inputValidate(title: String, content: String):Boolean {
+        val prefs = requireActivity().getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
+        val userId = prefs.getString(MainActivity.USER_ID, null)
+        var temp: Boolean = true
+
+        if (userId == null) {
+            return false
+        }
+
+        if (title.isEmpty()){
+            titleInput.error = "Title must not be empty"
+            temp = false
+        } else if (title.length > 80) {
+            titleInput.error = "Title too long"
+            temp = false
+        }
+        if (content.isEmpty()) {
+            descriptionInput.error = "Description must not be empty"
+            temp = false
+        } else if (descriptionInput.lineCount > 40 ) {
+            descriptionInput.error = "Description must be within 40 lines"
+            temp = false
+        }
+
+        return temp
+    }
+
     private fun submitPostHander() {
         val prefs = requireActivity().getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
         val userId = prefs.getString(MainActivity.USER_ID, null)
@@ -81,8 +108,7 @@ class AddPostFragment : Fragment() {
         val content = descriptionInput.text.toString().trim()
         val maxStat = maxStudentsInput.text.toString()
 
-        if (title.isEmpty() || content.isEmpty() || maxStat.isEmpty()) {
-            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+        if (!inputValidate(title, content)){
             return
         }
 
@@ -97,7 +123,7 @@ class AddPostFragment : Fragment() {
             payload.put("content", content)
             payload.put("hashtags", hashtags)
             payload.put("curstat", "0")
-            payload.put("maxstat", if (maxStat == "Unlimited") "0" else maxStat)
+            payload.put("maxstat", if (maxStat == "Unlimited" || maxStat == "") "0" else maxStat)
             payload.put("user", userId)
         } catch (e: Exception) {
             Log.e("PostDetail", "Failed to build JSON", e)
