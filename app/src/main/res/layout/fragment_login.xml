@@ -55,6 +55,19 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:id="@+id/login_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Error message"
+        android:textColor="@color/error"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@+id/login_password_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
         android:id="@+id/login_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

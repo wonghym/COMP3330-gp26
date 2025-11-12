@@ -54,19 +54,22 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun inputValidation(name: String, bio: String): Boolean {
-        if (name.isBlank()) {
-            Toast.makeText(requireContext(), "Name cannot be empty", Toast.LENGTH_LONG).show()
-            return false
-        }
-        if (name.length > 20) {
-            Toast.makeText(requireContext(), "Name must be 20 characters or less", Toast.LENGTH_LONG).show()
-            return false
+        nameInput.error = null
+        bioInput.error = null
+        var temp: Boolean = true
+
+        if (name.length < 3) {
+            nameInput.error = "Name cannot be empty and must be 3 or more characters"
+            temp = false
+        } else if (name.length > 20) {
+            nameInput.error = "Name must be 20 characters or less"
+            temp = false
         }
         if (bioInput.lineCount > 10) {
-            Toast.makeText(requireContext(), "Bio must be 10 lines or less", Toast.LENGTH_LONG).show()
-            return false
+            bioInput.error = "Bio must be 10 lines or less"
+            temp = false
         }
-        return true
+        return temp
     }
 
     private inner class putCallback() : UserUtils.PutCallBack {

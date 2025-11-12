@@ -6,4 +6,5 @@
     <color name="buttons">#2267e0</color>
     <color name="grey">#CCCACA</color>
     <color name="darkgrey">#525151</color>
+    <color name="error">#890F0F</color>
 </resources>

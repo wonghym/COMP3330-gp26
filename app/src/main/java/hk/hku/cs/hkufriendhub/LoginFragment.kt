@@ -25,6 +25,7 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
     private lateinit var passwordInput: TextInputEditText
     private lateinit var loginButton: Button
     private lateinit var signupText: TextView
+    private lateinit var errorText: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +37,12 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
         passwordInput = view.findViewById<TextInputEditText>(R.id.login_password_input)
         loginButton = view.findViewById<Button>(R.id.login_button)
         signupText = view.findViewById<TextView>(R.id.login_signup)
+        errorText = view.findViewById<TextView>(R.id.login_error)
+
+        errorText.text = null
 
         loginButton.setOnClickListener {
+            errorText.text = null
             val username = usernameInput.text.toString()
             val password = passwordInput.text.toString()
 
@@ -46,7 +51,7 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
 
                 UserUtils.loginHandler(username, password, requireContext(), this)
             } else {
-                Toast.makeText(requireContext(), "Please enter username and password", Toast.LENGTH_SHORT).show()
+                errorText.text = "Login failed: Empty username or password"
             }
         }
 
@@ -67,8 +72,7 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
             val mainActivity = activity as? MainActivity
 
             if (mainActivity != null) {
-                mainActivity.isLoggedIn = false
-                mainActivity.loadFragment(SignUpFragment(), false)
+                mainActivity.loadFragment(SignUpFragment(), true)
             }
         }
     }
@@ -91,7 +95,7 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
 
         passwordInput.text?.clear()
 
-        Toast.makeText(requireContext(), "Login failed: Invalid username or password", Toast.LENGTH_SHORT).show()
+        errorText.text = "Login failed: Invalid username or password"
         loginButton.isEnabled = true
     }
 }

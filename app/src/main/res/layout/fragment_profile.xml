@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome, User!"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="25dp"
+        android:textSize="28sp"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
