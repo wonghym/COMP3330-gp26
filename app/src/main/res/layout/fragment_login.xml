@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Log In"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,24 +54,25 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Log In"
-        app:layout_constraintTop_toBottomOf="@+id/login_password_layout" />
-
     <TextView
         android:id="@+id/login_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Do not have an account? Sign Up"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:padding="8dp"
         android:background="?attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@+id/login_button"
+        app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:padding="12dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

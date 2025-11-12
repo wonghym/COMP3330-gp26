@@ -7,32 +7,26 @@
     android:padding="32dp"
     tools:context=".SignUpFragment">
 
+    <ImageView
+        android:id="@+id/signup_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back_24"
+        android:contentDescription="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/signup_header"
+        app:layout_constraintBottom_toBottomOf="@+id/signup_header" />
+
     <TextView
         android:id="@+id/signup_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="28sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/signup_back_button"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signup_name_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Name"
-        app:layout_constraintTop_toBottomOf="@+id/signup_header" >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:singleLine="true"
-            android:id="@+id/signup_name_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signup_username_layout"
@@ -41,11 +35,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Username"
-        app:layout_constraintTop_toBottomOf="@+id/signup_name_layout" >
+        app:layout_constraintTop_toBottomOf="@+id/signup_header" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:singleLine="true"
             android:id="@+id/signup_username_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signup_name_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Name"
+        app:layout_constraintTop_toBottomOf="@+id/signup_username_layout" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:singleLine="true"
+            android:id="@+id/signup_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -59,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Password"
-        app:layout_constraintTop_toBottomOf="@+id/signup_username_layout"
+        app:layout_constraintTop_toBottomOf="@+id/signup_name_layout"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -94,8 +106,10 @@
         android:id="@+id/signup_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Sign Up"
-        app:layout_constraintTop_toBottomOf="@+id/signup_confirm_password_layout" />
+        android:padding="12dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

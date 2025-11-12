@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".MainFragment">
 
     <LinearLayout
@@ -15,7 +16,14 @@
             android:id="@+id/main_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="main fragment" />
+            android:text="Welcome to HKU FriendHub!"
+            android:paddingTop="32dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/main_swipe_refresh"
