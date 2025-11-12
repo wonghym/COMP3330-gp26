@@ -21,7 +21,7 @@
             app:shapeAppearance="@style/ShapeAppearance.App.Main_Add_Button" />
 
         <TextView
-            android:id="@+id/forum_username"
+            android:id="@+id/forum_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="10 hours ago"
             app:layout_constraintBottom_toBottomOf="@id/forum_profilepic"
-            app:layout_constraintStart_toStartOf="@id/forum_username" />
+            app:layout_constraintStart_toStartOf="@id/forum_name" />
 
         <TextView
             android:id="@+id/forum_post_content"
@@ -46,7 +46,7 @@
             android:layout_marginTop="8dp"
             android:textSize="16sp"
             android:text="Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing "
-            app:layout_constraintStart_toStartOf="@id/forum_username"
+            app:layout_constraintStart_toStartOf="@id/forum_name"
             app:layout_constraintTop_toBottomOf="@id/forum_profilepic"
             app:layout_constraintEnd_toEndOf="parent" />
 

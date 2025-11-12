@@ -40,12 +40,13 @@ class MainFragment : Fragment(), OnPostClickListener {
             getPosts()
         }
 
+        getPosts()
+
         postAdapter = PostAdapter(postList, this)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = postAdapter
 
         swipeRefreshLayout.isRefreshing = true
-        getPosts()
 
         return view
     }
@@ -70,10 +71,6 @@ class MainFragment : Fragment(), OnPostClickListener {
 
                 for (i in 0 until response.length()) {
                     val jsonObject = response.getJSONObject(i)
-                    val user = jsonObject.getJSONObject("user").getString("name")
-                    val date = jsonObject.getString("date")
-                    val title = jsonObject.getString("title")
-                    val text = jsonObject.getString("content")
 
                     val hashtags = ArrayList<String>();
                     val hashtagsList = jsonObject.getJSONArray("hashtags")
@@ -86,7 +83,8 @@ class MainFragment : Fragment(), OnPostClickListener {
                     val stat = if (maxstat == "0") "--/--" else "$curstat/$maxstat"
 
                     val postItem = PostModel(
-                        username = jsonObject.getJSONObject("user").getString("name"),
+                        id = jsonObject.getString("id"),
+                        name = jsonObject.getJSONObject("user").getString("name"),
                         timestamp = jsonObject.getString("date"),
                         title = jsonObject.getString("title"),
                         text = jsonObject.getString("content"),

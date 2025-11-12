@@ -10,6 +10,24 @@ forumRouter.get("/", async (request, response) => {
   response.json(msgs);
 });
 
+// get all messages of post
+forumRouter.get("/:id", async (request, response) => {
+  const postId = request.params.id;
+  try {
+    const targpost = await Post.findById(postId).populate({
+      path: "msg",
+      select: "date content like id user",
+      populate: {
+        path: "user",
+        select: "name",
+      },
+    });
+    response.json(targpost.msg);
+  } catch {
+    response.status(404).json({ error: "Post not found." });
+  }
+});
+
 forumRouter.post("/", async (request, response) => {
   const user = await User.findById(request.body.user);
   const targpost = await Post.findById(request.body.post);

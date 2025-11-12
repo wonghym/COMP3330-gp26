@@ -5,7 +5,9 @@ const Post = require("../models/post");
 const Forum = require("../models/forum");
 
 userRouter.get("/", async (request, response) => {
-  const users = await User.find({}).populate("posts").populate("joinedPost");
+  const users = await User.find({})
+    .populate({ path: "posts", select: "id title" })
+    .populate({ path: "joinedPost", select: "id title" });
   response.json(users);
 });
 

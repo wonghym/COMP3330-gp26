@@ -68,7 +68,7 @@
                     app:shapeAppearance="@style/ShapeAppearance.App.Main_Add_Button" />
 
                 <TextView
-                    android:id="@+id/postDetail_username"
+                    android:id="@+id/postDetail_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:text="10 hours ago"
                     app:layout_constraintBottom_toBottomOf="@id/postDetail_profilepic"
-                    app:layout_constraintStart_toStartOf="@id/postDetail_username" />
+                    app:layout_constraintStart_toStartOf="@id/postDetail_name" />
 
                 <TextView
                     android:id="@+id/postDetail_description"
@@ -119,12 +119,37 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/potDetail_chatroom_recycler"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/postDetail_swipe_refresh"
         android:layout_width="match_parent"
-        android:paddingHorizontal="14dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layout_constraintTop_toBottomOf="@id/postDetails_top"
-        tools:listitem="@layout/chat_item" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/postDetail_forum_recycler"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="14dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/chat_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/postDetail_forum_addMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:contentDescription="Add new msg"
+        app:srcCompat="@drawable/ic_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/buttons"
+        app:tint="@color/white"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Main_Add_Button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

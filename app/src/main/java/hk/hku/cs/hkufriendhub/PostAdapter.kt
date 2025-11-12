@@ -45,7 +45,7 @@ class PostAdapter(val postList: ArrayList<PostModel>, val clickListener: OnPostC
         fun bindItems(post: PostModel) {
             currentPost = post
 
-            itemView.findViewById<TextView>(R.id.post_username).text = post.username;
+            itemView.findViewById<TextView>(R.id.post_username).text = post.name;
             itemView.findViewById<TextView>(R.id.post_time).text = TimeUtils.getFormattedDate(post.timestamp);
             itemView.findViewById<TextView>(R.id.post_title).text = post.title;
             itemView.findViewById<TextView>(R.id.post_text).text = post.text;

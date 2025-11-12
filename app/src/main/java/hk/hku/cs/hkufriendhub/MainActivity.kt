@@ -28,9 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         useEffectUserToken()
 
-        Log.d("MainActivityUser", getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(USER_ID, null).toString())
-        Log.d("MainActivityUser", getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE).getString(USER_USERNAME, null).toString())
-
         // navigation bar
         loadFragment(MainFragment(), false)
         navBar = findViewById<BottomNavigationView>(R.id.nav_bar)
