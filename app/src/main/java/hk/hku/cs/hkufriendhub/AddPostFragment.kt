@@ -124,6 +124,7 @@ class AddPostFragment : Fragment() {
             payload.put("hashtags", hashtags)
             payload.put("curstat", "0")
             payload.put("maxstat", if (maxStat == "Unlimited" || maxStat == "") "0" else maxStat)
+            payload.put("like", "0")
             payload.put("user", userId)
         } catch (e: Exception) {
             Log.e("PostDetail", "Failed to build JSON", e)

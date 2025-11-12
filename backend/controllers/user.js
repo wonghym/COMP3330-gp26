@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const userRouter = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
+const Forum = require("../models/forum");
 
 userRouter.get("/", async (request, response) => {
   const users = await User.find({}).populate("posts").populate("joinedPost");
@@ -86,6 +87,8 @@ userRouter.delete("/:id", async (request, response) => {
   if (!user) {
     return response.status(404).json({ error: "User not found." });
   }
+
+  await Forum.deleteMany({ user: userId });
 
   if (user.posts && user.posts.length > 0) {
     const postsToDelete = user.posts;

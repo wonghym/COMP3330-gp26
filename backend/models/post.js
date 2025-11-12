@@ -9,11 +9,11 @@ const postSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    maxLength: 200,
   },
   hashtags: Array,
   curstat: String,
   maxstat: String,
+  like: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -22,6 +22,12 @@ const postSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+    },
+  ],
+  msg: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Forum",
     },
   ],
 });

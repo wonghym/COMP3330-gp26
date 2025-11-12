@@ -1,11 +1,13 @@
 const postRouter = require("express").Router();
+const Forum = require("../models/forum");
 const Post = require("../models/post");
 const User = require("../models/user");
 
 postRouter.get("/", async (request, response) => {
   const posts = await Post.find({})
     .populate({ path: "user", select: "username name id" })
-    .populate({ path: "joinedUser", select: "username name id" });
+    .populate({ path: "joinedUser", select: "id" })
+    .populate({ path: "msg", select: "content like user" });
   response.json(posts);
 });
 
@@ -34,6 +36,8 @@ postRouter.delete("/:id", async (request, response) => {
   if (!post) {
     return response.status(404).json({ error: "Post not found." });
   }
+
+  await Forum.deleteMany({ post: postId });
 
   if (post.user) {
     await User.findByIdAndUpdate(post.user, { $pull: { posts: postId } });

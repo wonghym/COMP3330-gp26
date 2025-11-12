@@ -7,6 +7,7 @@ const middlewares = require("./utils/middleware");
 const postRouter = require("./controllers/post");
 const userRouter = require("./controllers/user");
 const loginRouter = require("./controllers/login");
+const forumRouter = require("./controllers/forum");
 
 const app = express();
 
@@ -21,6 +22,7 @@ mongoose.connect(mongoUrl).then(logger.info("mongodb conencted"));
 app.use("/api/post", postRouter);
 app.use("/api/user", userRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/forum", forumRouter);
 
 app.use(middlewares.errorHandler);
 app.use(middlewares.unknownEndpoint);
