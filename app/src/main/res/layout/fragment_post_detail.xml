@@ -100,7 +100,9 @@
                         android:textSize="28sp"
                         android:layout_marginStart="10dp"
                         app:layout_constraintStart_toEndOf="@+id/postDetail_back_button"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:ellipsize="end"
+                        android:maxLines="3"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
