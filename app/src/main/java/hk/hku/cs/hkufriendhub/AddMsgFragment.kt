@@ -1,5 +1,6 @@
 package hk.hku.cs.hkufriendhub
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -28,8 +29,8 @@ class AddMsgFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_msg, container, false)
 
-        val prefs = requireActivity().getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
-        val userId = prefs.getString(MainActivity.USER_ID, null)
+        val mainActivity = activity as? MainActivity
+        val userId: String? = mainActivity?.userId
 
         backButton = view.findViewById<ImageView>(R.id.addMsg_back_button)
         text = view.findViewById<EditText>(R.id.addMsg_text_input)

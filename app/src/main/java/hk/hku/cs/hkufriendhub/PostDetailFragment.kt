@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 class PostDetailFragment : Fragment() {
 
@@ -27,6 +29,7 @@ class PostDetailFragment : Fragment() {
     private lateinit var joinButton: Button
     private lateinit var forumRecyclerView: RecyclerView
     private lateinit var forumAdapter: ForumAdapter
+    private var userId: String? = null
     private val msgList = ArrayList<ForumModel>()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -52,7 +55,8 @@ class PostDetailFragment : Fragment() {
         swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.postDetail_swipe_refresh)
 
         val mainActivity = activity as? MainActivity
-        addMsgButton.visibility = if (mainActivity != null && mainActivity.isLoggedIn) View.VISIBLE else View.GONE
+        userId = mainActivity?.userId
+        addMsgButton.visibility = if (mainActivity != null && mainActivity.userId != null) View.VISIBLE else View.GONE
 
         backButton.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
@@ -71,14 +75,25 @@ class PostDetailFragment : Fragment() {
         }
 
         joinButton.setOnClickListener {
-
+            putJoin(post.id, userId)
         }
 
         title.text = post.title
         username.text = post.name
         time.text = TimeUtils.getFormattedDate(post.timestamp)
         description.text = post.text
-        joinButton.text = if (post.groupStat == "--/--") "Join" else "Join (${post.groupStat})"
+        joinButton.text = if (post.userId == mainActivity?.userId) "Cannot join to own group!" else when (post.groupStat) {
+            "FULL" -> {
+                if (post.isJoined) "Joined (FULL)" else "FULL"
+            }
+            "--/--" -> {
+                if (post.isJoined) "Joined" else "Join"
+            }
+            else -> {
+                if (post.isJoined) "Joined (${post.groupStat})" else "Join (${post.groupStat})"
+            }
+        }
+        joinButton.isEnabled = !(post.isJoined || post.groupStat == "FULL" || post.userId == mainActivity?.userId)
 
         getMsg(post.id)
 
@@ -108,7 +123,7 @@ class PostDetailFragment : Fragment() {
                         name = jsonObject.getJSONObject("user").getString("name"),
                         timestamp = jsonObject.getString("date"),
                         text = jsonObject.getString("content"),
-                        like = jsonObject.getString("like")
+                        like = jsonObject.getInt("like")
                     )
                     msgList.add(forumItem)
                 }
@@ -123,6 +138,39 @@ class PostDetailFragment : Fragment() {
             }
         )
         Volley.newRequestQueue(context).add(jsonArrayRequest)
+    }
+
+    fun putJoin(post: String, user: String?) {
+        if (user == null) {
+            return
+        }
+        joinButton.isEnabled = false
+        val payload = JSONObject()
+        payload.put("user", user)
+        payload.put("post", post)
+
+        val url = "http://10.0.2.2:3001/api/post/join"
+        val jsonObjectRequest = JsonObjectRequest (
+            Request.Method.PUT, url, payload,
+            {
+                response ->
+                val curstat = response.getJSONObject("post").getInt("curstat")
+                val maxstat = response.getJSONObject("post").getInt("maxstat")
+                joinButton.isEnabled = false
+                joinButton.text = when (maxstat) {
+                    curstat -> "Joined (FULL)"
+                    0 -> "Joined"
+                    else -> "Joined ($curstat/$maxstat)"
+                }
+                updateUI()
+            },
+            {
+                error ->
+                joinButton.isEnabled = true
+            }
+        )
+
+        Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
 
     fun updateUI() {

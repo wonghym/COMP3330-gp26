@@ -70,8 +70,8 @@ class AddPostFragment : Fragment() {
     }
 
     private fun inputValidate(title: String, content: String):Boolean {
-        val prefs = requireActivity().getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
-        val userId = prefs.getString(MainActivity.USER_ID, null)
+        val mainActivity = activity as? MainActivity
+        val userId: String? = mainActivity?.userId
         var temp: Boolean = true
 
         if (userId == null) {
@@ -97,8 +97,8 @@ class AddPostFragment : Fragment() {
     }
 
     private fun submitPostHander() {
-        val prefs = requireActivity().getSharedPreferences(MainActivity.SHARED_PREFS, Context.MODE_PRIVATE)
-        val userId = prefs.getString(MainActivity.USER_ID, null)
+        val mainActivity = activity as? MainActivity
+        val userId: String? = mainActivity?.userId
 
         if (userId == null) {
             return
@@ -122,9 +122,9 @@ class AddPostFragment : Fragment() {
             payload.put("title", title)
             payload.put("content", content)
             payload.put("hashtags", hashtags)
-            payload.put("curstat", "0")
-            payload.put("maxstat", if (maxStat == "Unlimited" || maxStat == "") "0" else maxStat)
-            payload.put("like", "0")
+            payload.put("curstat", 0)
+            payload.put("maxstat", if (maxStat == "Unlimited" || maxStat == "") 0 else maxStat.toInt())
+            payload.put("like", 0)
             payload.put("user", userId)
         } catch (e: Exception) {
             Log.e("PostDetail", "Failed to build JSON", e)

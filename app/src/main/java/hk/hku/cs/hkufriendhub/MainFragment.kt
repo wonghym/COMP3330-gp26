@@ -1,5 +1,6 @@
 package hk.hku.cs.hkufriendhub
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ class MainFragment : Fragment(), OnPostClickListener {
     private lateinit var postAdapter: PostAdapter
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
+    private var userId: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,15 +29,16 @@ class MainFragment : Fragment(), OnPostClickListener {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         val addPostButton = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.main_add_post)
 
+        val mainActivity = activity as? MainActivity
+        userId = mainActivity?.userId
+
         recyclerView = view.findViewById<RecyclerView>(R.id.main_recyclerView)
         swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.main_swipe_refresh)
 
         addPostButton.setOnClickListener {
             (activity as? MainActivity)?.loadFragment(AddPostFragment(), true)
         }
-
-        val mainActivity = activity as? MainActivity
-        addPostButton.visibility = if (mainActivity != null && mainActivity.isLoggedIn) View.VISIBLE else View.GONE
+        addPostButton.visibility = if (mainActivity != null && mainActivity.userId != null) View.VISIBLE else View.GONE
 
         swipeRefreshLayout.setOnRefreshListener {
             getPosts()
@@ -78,18 +82,27 @@ class MainFragment : Fragment(), OnPostClickListener {
                         hashtags.add(hashtagsList[j].toString())
                     }
 
-                    var curstat = jsonObject.getString("curstat")
-                    var maxstat = jsonObject.getString("maxstat")
-                    val stat = if (maxstat == "0") "--/--" else "$curstat/$maxstat"
+                    var curstat = jsonObject.getInt("curstat")
+                    var maxstat = jsonObject.getInt("maxstat")
+                    val stat = if (maxstat == 0) "--/--" else (if (curstat == maxstat) "Full" else "$curstat/$maxstat")
+
+                    val joinedUserArray = jsonObject.getJSONArray("joinedUser")
+
+                    val isJoined = (0 until joinedUserArray.length()).any { i ->
+                        val userObj = joinedUserArray.getJSONObject(i)
+                        userObj.getString("id") == userId
+                    }
 
                     val postItem = PostModel(
                         id = jsonObject.getString("id"),
+                        userId = jsonObject.getJSONObject("user").getString("id"),
                         name = jsonObject.getJSONObject("user").getString("name"),
                         timestamp = jsonObject.getString("date"),
                         title = jsonObject.getString("title"),
                         text = jsonObject.getString("content"),
                         hashtags = hashtags,
-                        groupStat = stat
+                        groupStat = stat,
+                        isJoined = isJoined
                     )
                     postList.add(postItem)
                 }

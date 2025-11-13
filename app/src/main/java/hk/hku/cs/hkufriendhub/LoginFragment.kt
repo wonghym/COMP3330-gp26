@@ -84,7 +84,7 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
 
         val mainActivity = activity as? MainActivity
         if (mainActivity != null) {
-            mainActivity.isLoggedIn = true
+            mainActivity.userId = response.getString("id")
             mainActivity.loadFragment(ProfileFragment(), false)
         }
         loginButton.isEnabled = true

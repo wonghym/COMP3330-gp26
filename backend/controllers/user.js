@@ -105,7 +105,7 @@ userRouter.delete("/:id", async (request, response) => {
   if (user.joinedPost && user.joinedPost.length > 0) {
     await Post.updateMany(
       { _id: { $in: user.joinedPost } },
-      { $pull: { joinedUser: userId } }
+      { $pull: { joinedUser: userId }, $inc: { curstat: -1 } }
     );
   }
 

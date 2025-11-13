@@ -7,7 +7,10 @@ const forumSchema = new mongoose.Schema({
     required: true,
     maxLength: 200,
   },
-  like: String,
+  like: {
+    type: Number,
+    default: 0,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

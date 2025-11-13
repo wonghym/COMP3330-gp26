@@ -11,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navBar: BottomNavigationView
-    var isLoggedIn : Boolean = false
+    var userId : String? = null
 
     companion object {
         const val SHARED_PREFS = "SHARED_PREFS"
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_profile -> {
-                    if (isLoggedIn) {
+                    if (userId != null) {
                         loadFragment(ProfileFragment(), false)
                     } else {
                         loadFragment(LoginFragment(), false)
@@ -58,19 +58,19 @@ class MainActivity : AppCompatActivity() {
 
         if (token.isNullOrEmpty()) {
             Log.d("MainActivity", "No token is found")
-            this.isLoggedIn = false
+            this.userId = null
             return
         }
 
         val payload = TokenUtils.decode(token)
 
         if (payload == null) {
-            this.isLoggedIn = false
+            this.userId = null
             UserUtils.clearSavedData(this)
             return
         }
         Log.d("MainActivityUser", payload.toString())
-        this.isLoggedIn = true
+        this.userId = payload.getString("id")
     }
 
     fun loadFragment(fragment: Fragment, addToBackStack: Boolean){

@@ -28,6 +28,26 @@ postRouter.post("/", async (request, response) => {
   response.status(201).json(savedPost).end();
 });
 
+postRouter.put("/join", async (request, response) => {
+  const user = await User.findById(request.body.user);
+  const targpost = await Post.findById(request.body.post);
+
+  if (!user || !targpost) {
+    return response.status(400).json({
+      error: "userId/postId missing or not valid",
+    });
+  }
+
+  user.joinedPost = user.joinedPost.concat(request.body.post);
+  const savedUser = await user.save();
+
+  targpost.curstat = targpost.curstat + 1;
+  targpost.joinedUser = targpost.joinedUser.concat(request.body.user);
+  const savedPost = await targpost.save();
+
+  response.status(201).json({ user: savedUser, post: savedPost });
+});
+
 postRouter.delete("/:id", async (request, response) => {
   const postId = request.params.id;
 

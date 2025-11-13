@@ -11,9 +11,18 @@ const postSchema = new mongoose.Schema({
     required: true,
   },
   hashtags: Array,
-  curstat: String,
-  maxstat: String,
-  like: String,
+  curstat: {
+    type: Number,
+    default: 0,
+  },
+  maxstat: {
+    type: Number,
+    default: 0,
+  },
+  like: {
+    type: Number,
+    default: 0,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

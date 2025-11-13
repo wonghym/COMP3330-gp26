@@ -32,20 +32,18 @@ class ProfileFragment : Fragment() {
         nameInput = view.findViewById<TextView>(R.id.profile_name_input)
         bioInput = view.findViewById<TextView>(R.id.profile_bio_input)
 
-        val id = prefs.getString(MainActivity.USER_ID, null)
+        val id: String? = mainActivity?.userId
         val username = prefs.getString(MainActivity.USER_USERNAME, null)
 
         message.text = "Welcome, $username!"
 
         fetchUserData(id)
 
-        nameInput
-
         logoutButton.setOnClickListener {
             UserUtils.clearSavedData(requireContext())
 
             if (mainActivity != null) {
-                mainActivity?.isLoggedIn = false
+                mainActivity?.userId = null
                 mainActivity?.loadFragment(LoginFragment(), false)
             }
         }
