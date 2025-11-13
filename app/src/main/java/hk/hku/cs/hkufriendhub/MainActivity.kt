@@ -9,8 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-import androidx.recyclerview.widget.RecyclerView;
-
 class MainActivity : AppCompatActivity() {
     private lateinit var navBar: BottomNavigationView
     var isLoggedIn : Boolean = false
@@ -37,8 +35,8 @@ class MainActivity : AppCompatActivity() {
                     loadFragment(MainFragment(), false)
                     true
                 }
-                R.id.nav_forum -> {
-                    loadFragment(ForumFragment(), false)
+                R.id.nav_chatroom -> {
+                    loadFragment(ChatroomFragment(), false)
                     true
                 }
                 R.id.nav_profile -> {

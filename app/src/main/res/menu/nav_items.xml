@@ -7,9 +7,9 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/nav_forum"
+        android:id="@+id/nav_chatroom"
         android:icon="@drawable/ic_forum_24"
-        android:title="Forum" />
+        android:title="Chatroom" />
 
     <item
         android:id="@+id/nav_profile"
