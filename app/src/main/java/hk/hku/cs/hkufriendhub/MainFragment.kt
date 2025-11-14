@@ -64,7 +64,7 @@ class MainFragment : Fragment(), OnPostClickListener {
         (activity as? MainActivity)?.loadFragment(postDetailFragment, true)
     }
 
-    fun getPosts() {
+    private fun getPosts() {
         val url = "http://10.0.2.2:3001/api/post"
         val jsonArrayRequest = JsonArrayRequest(
             Request.Method.GET, url, null,

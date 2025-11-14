@@ -12,7 +12,7 @@ interface OnChatroomClickListener {
 
 class ChatroomAdapter(val chatroomList: ArrayList<ChatroomModel>, val clickListener: OnChatroomClickListener): RecyclerView.Adapter<ChatroomAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.chat_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.chatroom_item, parent, false)
         return ViewHolder(v, clickListener)
     }
 
