@@ -23,7 +23,6 @@ class ChatroomDetailFragment : Fragment() {
     private lateinit var chatroom: ChatroomModel
     private lateinit var backButton: ImageView
     private lateinit var title: TextView
-    private lateinit var onlineCount: TextView
     private lateinit var msgInput: EditText
     private lateinit var msgSendButton: ImageButton
     private lateinit var chatroomDetailAdapter: ChatroomDetailAdapter
@@ -35,6 +34,7 @@ class ChatroomDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val mainActivity = activity as? MainActivity
         val view = inflater.inflate(R.layout.fragment_chatroom_detail, container, false)
 
         arguments?.let {
@@ -43,12 +43,10 @@ class ChatroomDetailFragment : Fragment() {
 
         backButton = view.findViewById<ImageView>(R.id.chatroom_back_button)
         title = view.findViewById<TextView>(R.id.chatroom_title)
-        onlineCount = view.findViewById<TextView>(R.id.chatroom_online)
         msgInput = view.findViewById<EditText>(R.id.chatroom_input)
         msgSendButton = view.findViewById<ImageButton>(R.id.chatroom_send)
         recyclerView = view.findViewById<RecyclerView>(R.id.chatroom_recycler)
 
-        val mainActivity = activity as? MainActivity
         userId = mainActivity?.userId
 
         backButton.setOnClickListener {

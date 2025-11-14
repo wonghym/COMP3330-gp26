@@ -5,7 +5,8 @@
     <color name="ricewhite">#EDEDED</color>
     <color name="subtext">#282828</color>
     <color name="buttons">#417FEB</color>
-    <color name="buttonsDisabled">#8AA9DE</color>
+    <color name="buttonsDisabled">#8A95A6</color>
+    <color name="buttonsPressed">#8AA9DE</color>
     <color name="grey">#CCCACA</color>
     <color name="darkgrey">#525151</color>
     <color name="error">#890F0F</color>

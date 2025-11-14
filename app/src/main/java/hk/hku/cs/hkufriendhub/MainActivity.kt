@@ -36,7 +36,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_chatroom -> {
-                    loadFragment(ChatroomFragment(), false)
+                    if (userId != null) {
+                        loadFragment(ChatroomFragment(), false)
+                    } else {
+                        loadFragment(LoginFragment(), false)
+                    }
                     true
                 }
                 R.id.nav_profile -> {

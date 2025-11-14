@@ -83,6 +83,7 @@
         android:id="@+id/editProfile_save_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_color"
         android:text="Save"
         android:padding="12dp"
         android:textSize="16sp"

@@ -108,6 +108,7 @@
         android:layout_height="wrap_content"
         android:text="Sign Up"
         android:padding="12dp"
+        android:backgroundTint="@color/button_color"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent" />
 

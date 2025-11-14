@@ -60,7 +60,7 @@ class LoginFragment : Fragment(), UserUtils.LoginCallback {
         return view
     }
 
-    private fun setupSignup(view: View) {
+    fun setupSignup(view: View) {
         val text1 = "Do not have an account? "
         val text2 = "Sign Up"
         val spannable = SpannableString(text2)
