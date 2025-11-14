@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema({
   date: Date,
+  lastMsg: {
+    type: Date,
+    default: new Date(),
+  },
   title: {
     type: String,
     required: true,
@@ -19,18 +23,21 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  like: {
-    type: Number,
-    default: 0,
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
   joinedUser: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      notiCount: {
+        type: Number,
+        default: 0,
+      },
+      _id: false,
     },
   ],
   msg: [

@@ -1,13 +1,14 @@
 const postRouter = require("express").Router();
+const mongoose = require("mongoose");
 const Forum = require("../models/forum");
 const Post = require("../models/post");
 const User = require("../models/user");
 
 postRouter.get("/", async (request, response) => {
-  const posts = await Post.find({})
-    .populate({ path: "user", select: "username name id" })
-    .populate({ path: "joinedUser", select: "id" })
-    .populate({ path: "msg", select: "content like user" });
+  const posts = await Post.find({}).populate({
+    path: "user",
+    select: "username name id",
+  });
   response.json(posts);
 });
 
@@ -21,31 +22,80 @@ postRouter.post("/", async (request, response) => {
   }
 
   const post = Post({ ...request.body, date: new Date() });
+  post.joinedUser = post.joinedUser.concat({ user: user._id, notiCount: 0 });
   const savedPost = await post.save();
   user.posts = user.posts.concat(savedPost._id);
+  user.joinedPost = user.joinedPost.concat(savedPost._id);
   await user.save();
 
   response.status(201).json(savedPost).end();
 });
 
 postRouter.put("/join", async (request, response) => {
-  const user = await User.findById(request.body.user);
-  const targpost = await Post.findById(request.body.post);
+  const { user: userId, post: postId } = request.body;
 
-  if (!user || !targpost) {
+  if (!userId || !postId) {
     return response.status(400).json({
-      error: "userId/postId missing or not valid",
+      error: "userId and postId are required",
     });
   }
 
-  user.joinedPost = user.joinedPost.concat(request.body.post);
-  const savedUser = await user.save();
+  const session = await mongoose.startSession();
 
-  targpost.curstat = targpost.curstat + 1;
-  targpost.joinedUser = targpost.joinedUser.concat(request.body.user);
-  const savedPost = await targpost.save();
+  try {
+    session.startTransaction();
+    const post = await Post.findById(postId).session(session);
+    if (!post) {
+      throw new Error("Post not found");
+    }
 
-  response.status(201).json({ user: savedUser, post: savedPost });
+    const user = await User.findById(userId).session(session);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (post.joinedUser.some((entry) => entry.user.equals(userId))) {
+      throw new Error("User has already joined this post");
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { joinedPost: postId } },
+      { new: true, session: session }
+    );
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $inc: { curstat: 1 },
+        $push: {
+          joinedUser: { user: userId, notiCount: 0 },
+        },
+      },
+      { new: true, session: session }
+    );
+
+    await session.commitTransaction();
+
+    response.status(200).json({ user: updatedUser, post: updatedPost });
+  } catch (error) {
+    await session.abortTransaction();
+    console.error("Transaction aborted:", error.message);
+
+    if (
+      error.message === "User not found" ||
+      error.message === "Post not found"
+    ) {
+      return response.status(404).json({ error: error.message });
+    }
+    if (error.message === "User has already joined this post") {
+      return response.status(400).json({ error: error.message });
+    }
+
+    response.status(500).json({ error: "An internal server error occurred" });
+  } finally {
+    session.endSession();
+  }
 });
 
 postRouter.delete("/:id", async (request, response) => {
@@ -65,7 +115,7 @@ postRouter.delete("/:id", async (request, response) => {
 
   if (post.joinedUser && post.joinedUser.length > 0) {
     await User.updateMany(
-      { _id: { $in: post.joinedUser } },
+      { _id: { $in: post.joinedUser.user } },
       { $pull: { joinedPost: postId } }
     );
   }

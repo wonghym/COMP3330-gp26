@@ -93,7 +93,7 @@ class PostDetailFragment : Fragment() {
                 if (post.isJoined) "Joined (${post.groupStat})" else "Join (${post.groupStat})"
             }
         }
-        joinButton.isEnabled = !(post.isJoined || post.groupStat == "FULL" || post.userId == mainActivity?.userId)
+        joinButton.isEnabled = !(post.isJoined || post.groupStat == "FULL" || post.userId == mainActivity?.userId || mainActivity?.userId == null)
 
         getMsg(post.id)
 
@@ -122,8 +122,7 @@ class PostDetailFragment : Fragment() {
                         id = jsonObject.getString("id"),
                         name = jsonObject.getJSONObject("user").getString("name"),
                         timestamp = jsonObject.getString("date"),
-                        text = jsonObject.getString("content"),
-                        like = jsonObject.getInt("like")
+                        text = jsonObject.getString("content")
                     )
                     msgList.add(forumItem)
                 }

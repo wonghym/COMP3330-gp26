@@ -7,5 +7,4 @@ data class ForumModel (
     val name: String,
     val timestamp: String,
     val text: String,
-    val like: Int,
 )

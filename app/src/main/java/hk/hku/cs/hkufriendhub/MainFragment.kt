@@ -90,7 +90,7 @@ class MainFragment : Fragment(), OnPostClickListener {
 
                     val isJoined = (0 until joinedUserArray.length()).any { i ->
                         val userObj = joinedUserArray.getJSONObject(i)
-                        userObj.getString("id") == userId
+                        userObj.getString("user") == userId
                     }
 
                     val postItem = PostModel(

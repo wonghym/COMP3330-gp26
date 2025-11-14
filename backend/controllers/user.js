@@ -7,7 +7,7 @@ const Forum = require("../models/forum");
 userRouter.get("/", async (request, response) => {
   const users = await User.find({})
     .populate({ path: "posts", select: "id title" })
-    .populate({ path: "joinedPost", select: "id title" });
+    .populate({ path: "joinedPost", select: "id title lastMsg" });
   response.json(users);
 });
 
@@ -105,7 +105,7 @@ userRouter.delete("/:id", async (request, response) => {
   if (user.joinedPost && user.joinedPost.length > 0) {
     await Post.updateMany(
       { _id: { $in: user.joinedPost } },
-      { $pull: { joinedUser: userId }, $inc: { curstat: -1 } }
+      { $pull: { joinedUser: { user: userId } }, $inc: { curstat: -1 } }
     );
   }
 

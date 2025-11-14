@@ -8,6 +8,7 @@ const postRouter = require("./controllers/post");
 const userRouter = require("./controllers/user");
 const loginRouter = require("./controllers/login");
 const forumRouter = require("./controllers/forum");
+const chatroomRouter = require("./controllers/chatroom");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use("/api/post", postRouter);
 app.use("/api/user", userRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/forum", forumRouter);
+app.use("/api/chat", chatroomRouter);
 
 app.use(middlewares.errorHandler);
 app.use(middlewares.unknownEndpoint);

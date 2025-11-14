@@ -45,7 +45,6 @@ class AddMsgFragment : Fragment() {
             if (inputValidate(text.text.toString())) {
                 val requestBody = JSONObject()
                 requestBody.put("content", text.text.toString())
-                requestBody.put("like", "0")
                 requestBody.put("user", userId)
                 requestBody.put("post", postId)
 

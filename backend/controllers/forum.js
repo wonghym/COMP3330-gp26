@@ -14,14 +14,16 @@ forumRouter.get("/", async (request, response) => {
 forumRouter.get("/:id", async (request, response) => {
   const postId = request.params.id;
   try {
-    const targpost = await Post.findById(postId).populate({
-      path: "msg",
-      select: "date content like id user",
-      populate: {
-        path: "user",
-        select: "name",
-      },
-    });
+    const targpost = await Post.findById(postId)
+      .sort({ date: 1 })
+      .populate({
+        path: "msg",
+        select: "date content id user",
+        populate: {
+          path: "user",
+          select: "name",
+        },
+      });
     response.json(targpost.msg);
   } catch {
     response.status(404).json({ error: "Post not found." });
