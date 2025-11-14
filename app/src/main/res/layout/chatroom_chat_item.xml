@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="8dp"
@@ -14,26 +13,40 @@
         android:id="@+id/message_bubble_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="280dp"
+        android:maxWidth="320dp"
+        android:background="@drawable/sent_chatbubble"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constrainedWidth="true"
-        tools:background="@drawable/sent_chatbubble"
-        tools:layout_constraintEnd_toEndOf="parent"
-        tools:padding="8dp">
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/text_message_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Sender"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_message_body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16sp"
+            android:text="Testing Testing Testing Testing Testing"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/text_message_time"
-            tools:text="Hello, how are you doing today? This is a longer message to test the wrapping." />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_message_sender" />
 
         <TextView
             android:id="@+id/text_message_time"
@@ -46,7 +59,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constrainedWidth="true"
             app:layout_constraintHorizontal_bias="1.0"
-            tools:text="10:30 AM" />
+            android:text="10:30 AM" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

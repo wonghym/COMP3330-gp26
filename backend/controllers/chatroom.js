@@ -45,4 +45,59 @@ chatroomRouter.get("/user/:id", async (request, response) => {
   }
 });
 
+chatroomRouter.post("/", async (request, response) => {
+  const { postId, userId, content } = request.body;
+
+  if (!postId || !userId || !content) {
+    return response.status(400).json({
+      error: "Missing postId / userId / content",
+    });
+  }
+
+  try {
+    const msg = new Chatroom({
+      content: content,
+      sender: userId,
+      post: postId,
+    });
+    const newMsg = await msg.save();
+    await Post.findByIdAndUpdate(postId, {
+      $push: { msg: newMsg._id },
+      $set: { lastMsg: new Date() },
+    }).exec();
+
+    await Post.updateOne(
+      { _id: postId },
+      { $inc: { "joinedUser.$[elem].notiCount": 1 } },
+      { arrayFilters: [{ "elem.user": { $ne: userId } }] }
+    ).exec();
+
+    await Post.updateOne(
+      { _id: postId },
+      { $set: { "joinedUser.$[elem].notiCount": 0 } },
+      { arrayFilters: [{ "elem.user": userId }] }
+    ).exec();
+
+    const populatedMessage = await Chatroom.findById(newMsg._id).populate(
+      "sender",
+      "name"
+    );
+    const senderData = populatedMessage.sender;
+
+    response.status(201).json({
+      content: populatedMessage.content,
+      time: populatedMessage.time,
+      id: populatedMessage._id,
+      post: populatedMessage.post,
+      sender: {
+        id: senderData._id,
+        name: senderData.name,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = chatroomRouter;

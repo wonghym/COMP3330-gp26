@@ -172,7 +172,7 @@ class PostDetailFragment : Fragment() {
         Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
 
-    fun updateUI() {
+    private fun updateUI() {
         forumAdapter.notifyDataSetChanged()
     }
 }
