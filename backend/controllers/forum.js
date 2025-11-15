@@ -21,7 +21,7 @@ forumRouter.get("/:id", async (request, response) => {
         select: "date content id user",
         populate: {
           path: "user",
-          select: "name",
+          select: "name profilePic",
         },
       });
     response.json(targpost.msg);

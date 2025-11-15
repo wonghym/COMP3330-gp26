@@ -7,4 +7,5 @@ data class ForumModel (
     val name: String,
     val timestamp: String,
     val text: String,
+    val profilePic: String?
 )

@@ -3,6 +3,10 @@ const userRouter = require("express").Router();
 const User = require("../models/user");
 const Post = require("../models/post");
 const Forum = require("../models/forum");
+const fs = require("fs");
+const multer = require("multer");
+
+const upload = multer();
 
 userRouter.get("/", async (request, response) => {
   const users = await User.find({})
@@ -80,6 +84,30 @@ userRouter.put("/:id", async (request, response) => {
     { new: true }
   );
   response.status(201).json(updatedUser).end;
+});
+
+userRouter.put("/:id/image", async (request, response) => {
+  const id = request.params.id;
+  const base64 = request.body.profilePic || null;
+
+  const filePath = `uploads/${id}.png`;
+
+  if (base64) {
+    fs.writeFile(filePath, base64, "base64", (error) => {
+      if (error) console.log(error);
+    });
+  } else {
+    fs.unlink(filePath, (error) => {
+      if (error) console.log(error);
+    });
+  }
+
+  const user = await User.findByIdAndUpdate(
+    id,
+    { profilePic: base64 },
+    { new: true }
+  );
+  response.status(201).json(user).end;
 });
 
 userRouter.delete("/:id", async (request, response) => {

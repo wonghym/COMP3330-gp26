@@ -7,7 +7,7 @@ const User = require("../models/user");
 postRouter.get("/", async (request, response) => {
   const posts = await Post.find({}).populate({
     path: "user",
-    select: "username name id",
+    select: "username name id profilePic",
   });
   response.json(posts);
 });

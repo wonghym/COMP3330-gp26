@@ -11,5 +11,6 @@ data class PostModel (
     val text: String,
     val hashtags: ArrayList<String>,
     val groupStat: String,
-    val isJoined: Boolean
+    val isJoined: Boolean,
+    val profilePic: String?,
 ) : Serializable

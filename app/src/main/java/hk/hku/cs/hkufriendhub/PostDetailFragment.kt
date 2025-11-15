@@ -1,6 +1,8 @@
 package hk.hku.cs.hkufriendhub
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +24,7 @@ class PostDetailFragment : Fragment() {
 
     private lateinit var post: PostModel
     private lateinit var backButton: ImageView
+    private lateinit var profilePicView: ImageView
     private lateinit var title: TextView
     private lateinit var username: TextView
     private lateinit var time: TextView
@@ -44,6 +47,7 @@ class PostDetailFragment : Fragment() {
         }
 
         backButton = view.findViewById<ImageView>(R.id.postDetail_back_button)
+        profilePicView = view.findViewById<ImageView>(R.id.postDetail_profilepic)
         title = view.findViewById<TextView>(R.id.postDetail_title)
         username = view.findViewById<TextView>(R.id.postDetail_name)
         time = view.findViewById<TextView>(R.id.postDetail_time)
@@ -76,6 +80,24 @@ class PostDetailFragment : Fragment() {
 
         joinButton.setOnClickListener {
             putJoin(post.id, userId)
+        }
+
+        val base64ImageString = post.profilePic
+
+        if (!base64ImageString.isNullOrEmpty()) {
+            try {
+                val imageBytes = Base64.decode(base64ImageString, Base64.URL_SAFE)
+
+                val decodedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                if (decodedBitmap != null) {
+                    profilePicView.setImageBitmap(decodedBitmap)
+                } else {
+                    Log.e("profilePic", "Failed to decode Base64 into Bitmap.")
+                }
+            } catch (e: IllegalArgumentException) {
+                Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+            }
         }
 
         title.text = post.title
@@ -122,7 +144,8 @@ class PostDetailFragment : Fragment() {
                         id = jsonObject.getString("id"),
                         name = jsonObject.getJSONObject("user").getString("name"),
                         timestamp = jsonObject.getString("date"),
-                        text = jsonObject.getString("content")
+                        text = jsonObject.getString("content"),
+                        profilePic = jsonObject.getJSONObject("user").optString("profilePic", null)
                     )
                     msgList.add(forumItem)
                 }

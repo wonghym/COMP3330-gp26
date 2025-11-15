@@ -48,6 +48,7 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

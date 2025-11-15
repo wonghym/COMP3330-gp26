@@ -1,8 +1,12 @@
 package hk.hku.cs.hkufriendhub
 
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -44,6 +48,24 @@ class PostAdapter(val postList: ArrayList<PostModel>, val clickListener: OnPostC
         }
         fun bindItems(post: PostModel) {
             currentPost = post
+
+            val base64ImageString = post.profilePic
+
+            if (!base64ImageString.isNullOrEmpty()) {
+                try {
+                    val imageBytes = Base64.decode(base64ImageString, Base64.URL_SAFE)
+
+                    val decodedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                    if (decodedBitmap != null) {
+                        itemView.findViewById<ImageView>(R.id.post_profile).setImageBitmap(decodedBitmap)
+                    } else {
+                        Log.e("profilePic", "Failed to decode Base64 into Bitmap.")
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+                }
+            }
 
             itemView.findViewById<TextView>(R.id.post_username).text = post.name;
             itemView.findViewById<TextView>(R.id.post_time).text = TimeUtils.getFormattedDate(post.timestamp);

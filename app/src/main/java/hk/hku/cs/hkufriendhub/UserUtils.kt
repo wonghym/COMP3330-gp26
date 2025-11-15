@@ -2,6 +2,7 @@ package hk.hku.cs.hkufriendhub
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -20,6 +21,11 @@ object UserUtils {
     }
 
     interface PutCallBack {
+        fun onSuccess(response: JSONObject)
+        fun onError(error: VolleyError)
+    }
+
+    interface ImgCallBack {
         fun onSuccess(response: JSONObject)
         fun onError(error: VolleyError)
     }
@@ -98,5 +104,23 @@ object UserUtils {
         )
         Volley.newRequestQueue(context).add(jsonObjectRequest)
     }
+
+    fun putUserImg(img: String?, context: Context, id: String?, callback: ImgCallBack) {
+        var url = "http://10.0.2.2:3001/api/user/${id}/image"
+        val requestBody = JSONObject()
+        requestBody.put("profilePic", img)
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.PUT, url, requestBody,
+            { response ->
+                callback.onSuccess(response)
+            },
+            { error ->
+                callback.onError(error)
+            }
+        )
+        Volley.newRequestQueue(context).add(jsonObjectRequest)
+    }
+
 
 }
