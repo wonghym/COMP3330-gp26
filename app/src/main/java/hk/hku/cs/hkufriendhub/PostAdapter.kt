@@ -1,6 +1,7 @@
 package hk.hku.cs.hkufriendhub
 
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import kotlin.coroutines.coroutineContext
 
 interface OnPostClickListener {
     fun onPostClick(post: PostModel)
@@ -64,6 +66,19 @@ class PostAdapter(val postList: ArrayList<PostModel>, val clickListener: OnPostC
                     }
                 } catch (e: IllegalArgumentException) {
                     Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+                }
+            }
+
+            itemView.findViewById<ImageView>(R.id.post_profile).setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("ID", post.userId)
+                    putString("profilePic", post.profilePic)
+                }
+
+                val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
+                val context = itemView.context
+                if (context is MainActivity) {
+                    context.loadFragment(userProfileFragment, true)
                 }
             }
 

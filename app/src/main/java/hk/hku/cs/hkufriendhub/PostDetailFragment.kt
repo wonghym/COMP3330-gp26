@@ -82,6 +82,15 @@ class PostDetailFragment : Fragment() {
             putJoin(post.id, userId)
         }
 
+        profilePicView.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("ID", post.userId)
+                putString("profilePic", post.profilePic)
+            }
+            val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
+            (activity as? MainActivity)?.loadFragment(userProfileFragment, true)
+        }
+
         val base64ImageString = post.profilePic
 
         if (!base64ImageString.isNullOrEmpty()) {

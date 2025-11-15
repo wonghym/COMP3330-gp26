@@ -100,4 +100,17 @@ chatroomRouter.post("/", async (request, response) => {
   }
 });
 
+chatroomRouter.put("/:userId", async (request, response) => {
+  const userId = request.params.userId;
+  const postId = request.body.postId;
+
+  const updatedPost = await Post.updateOne(
+    { _id: postId },
+    { $set: { "joinedUser.$[elem].notiCount": 0 } },
+    { arrayFilters: [{ "elem.user": userId }] }
+  ).exec();
+
+  response.status(201).json(updatedPost);
+});
+
 module.exports = chatroomRouter;

@@ -1,6 +1,7 @@
 package hk.hku.cs.hkufriendhub
 
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -47,6 +48,19 @@ class ForumAdapter(val messageList: ArrayList<ForumModel>): RecyclerView.Adapter
                     }
                 } catch (e: IllegalArgumentException) {
                     Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+                }
+            }
+
+            profilePic.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("ID", message.id)
+                    putString("profilePic", message.profilePic)
+                }
+
+                val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
+                val context = itemView.context
+                if (context is MainActivity) {
+                    context.loadFragment(userProfileFragment, true)
                 }
             }
 

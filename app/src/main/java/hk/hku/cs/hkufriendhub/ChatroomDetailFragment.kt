@@ -68,6 +68,33 @@ class ChatroomDetailFragment : Fragment() {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        val url = "http://10.0.2.2:3001/api/chat/${userId}"
+        val payload = JSONObject()
+        payload.put("postId", chatroom.id)
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.PUT, url, payload,
+            {
+                response ->
+            },
+            {
+                error ->
+            }
+        )
+
+        parentFragmentManager.setFragmentResult(
+            "RESET_NOTI",
+            Bundle().apply {
+                putString("CHATROOM_ID", chatroom.id)
+            }
+        )
+        Volley.newRequestQueue(requireContext()).add(jsonObjectRequest)
+
+        recyclerView.adapter = null
+    }
+
     fun getChat(postId: String) {
         val url = "http://10.0.2.2:3001/api/chat/post/$postId"
         val jsonArrayRequest = JsonArrayRequest(

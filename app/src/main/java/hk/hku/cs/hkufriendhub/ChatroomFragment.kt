@@ -23,6 +23,22 @@ class ChatroomFragment : Fragment(), OnChatroomClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        parentFragmentManager.setFragmentResultListener("RESET_NOTI", this){
+            key, bundle ->
+            val updatedChatroomId = bundle.getString("CHATROOM_ID")
+
+            if (updatedChatroomId != null) {
+                val index = chatroomList.indexOfFirst { it.id == updatedChatroomId }
+
+                if (index != -1) {
+                    chatroomList[index].notificationCount = 0
+
+                    Log.d("ChatUpdate", "Item at index $index count set to 0. $updatedChatroomId")
+                    chatroomAdapter.notifyItemChanged(index)
+                }
+            }
+        }
+
         val view = inflater.inflate(R.layout.fragment_chatroom, container, false)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.chatroom_list_recycler)
