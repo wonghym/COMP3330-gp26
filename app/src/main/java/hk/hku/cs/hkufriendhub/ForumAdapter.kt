@@ -32,39 +32,40 @@ class ForumAdapter(val messageList: ArrayList<ForumModel>): RecyclerView.Adapter
             val time = itemView.findViewById<TextView>(R.id.forum_time)
             val content = itemView.findViewById<TextView>(R.id.forum_post_content)
 
+            if (message.hidename == false) {
+                val base64ImageString = message.profilePic
 
-            val base64ImageString = message.profilePic
+                if (!base64ImageString.isNullOrEmpty()) {
+                    try {
+                        val imageBytes = Base64.decode(base64ImageString, Base64.URL_SAFE)
 
-            if (!base64ImageString.isNullOrEmpty()) {
-                try {
-                    val imageBytes = Base64.decode(base64ImageString, Base64.URL_SAFE)
+                        val decodedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-                    val decodedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-                    if (decodedBitmap != null) {
-                        profilePic.setImageBitmap(decodedBitmap)
-                    } else {
-                        Log.e("profilePic", "Failed to decode Base64 into Bitmap.")
+                        if (decodedBitmap != null) {
+                            profilePic.setImageBitmap(decodedBitmap)
+                        } else {
+                            Log.e("profilePic", "Failed to decode Base64 into Bitmap.")
+                        }
+                    } catch (e: IllegalArgumentException) {
+                        Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
                     }
-                } catch (e: IllegalArgumentException) {
-                    Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+                }
+
+                profilePic.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putString("ID", message.id)
+                        putString("profilePic", message.profilePic)
+                    }
+
+                    val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
+                    val context = itemView.context
+                    if (context is MainActivity) {
+                        context.loadFragment(userProfileFragment, true)
+                    }
                 }
             }
 
-            profilePic.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("ID", message.id)
-                    putString("profilePic", message.profilePic)
-                }
-
-                val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
-                val context = itemView.context
-                if (context is MainActivity) {
-                    context.loadFragment(userProfileFragment, true)
-                }
-            }
-
-            name.text = message.name
+            name.text = if (message.hidename == true) "Anonymous" else message.name
             time.text = TimeUtils.calculateTime(message.timestamp)
             content.text = message.text
         }

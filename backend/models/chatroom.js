@@ -19,6 +19,10 @@ const chatroomSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  hidename: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 chatroomSchema.set("toJSON", {

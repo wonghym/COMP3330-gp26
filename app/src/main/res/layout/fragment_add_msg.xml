@@ -53,6 +53,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addMsg_text_label" />
 
+    <TextView
+        android:id="@+id/addMsg_hidename_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Post anonymously?"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addMsg_text_input" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/addMsg_hidename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/addMsg_hidename_label"
+        app:thumbTint="@color/white"
+        app:trackTint="@color/slider_color_track"/>
+
     <Button
         android:id="@+id/addMsg_submit_button"
         android:layout_width="match_parent"

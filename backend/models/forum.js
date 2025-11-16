@@ -15,6 +15,10 @@ const forumSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",
   },
+  hidename: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 forumSchema.set("toJSON", {

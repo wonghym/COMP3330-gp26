@@ -103,7 +103,8 @@ class MainFragment : Fragment(), OnPostClickListener {
                         hashtags = hashtags,
                         groupStat = stat,
                         isJoined = isJoined,
-                        profilePic = jsonObject.getJSONObject("user").optString("profilePic", null)
+                        profilePic = jsonObject.getJSONObject("user").optString("profilePic", null),
+                        hidename = jsonObject.optBoolean("hidename", false)
                     )
                     postList.add(postItem)
                 }

@@ -82,35 +82,37 @@ class PostDetailFragment : Fragment() {
             putJoin(post.id, userId)
         }
 
-        profilePicView.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString("ID", post.userId)
-                putString("profilePic", post.profilePic)
-            }
-            val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
-            (activity as? MainActivity)?.loadFragment(userProfileFragment, true)
-        }
-
-        val base64ImageString = post.profilePic
-
-        if (!base64ImageString.isNullOrEmpty()) {
-            try {
-                val imageBytes = Base64.decode(base64ImageString, Base64.URL_SAFE)
-
-                val decodedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-                if (decodedBitmap != null) {
-                    profilePicView.setImageBitmap(decodedBitmap)
-                } else {
-                    Log.e("profilePic", "Failed to decode Base64 into Bitmap.")
+        if (post.hidename == false) {
+            profilePicView.setOnClickListener {
+                val bundle = Bundle().apply {
+                    putString("ID", post.userId)
+                    putString("profilePic", post.profilePic)
                 }
-            } catch (e: IllegalArgumentException) {
-                Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+                val userProfileFragment = UserProfileFragment().apply{arguments = bundle}
+                (activity as? MainActivity)?.loadFragment(userProfileFragment, true)
+            }
+
+            val base64ImageString = post.profilePic
+
+            if (!base64ImageString.isNullOrEmpty()) {
+                try {
+                    val imageBytes = Base64.decode(base64ImageString, Base64.URL_SAFE)
+
+                    val decodedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+                    if (decodedBitmap != null) {
+                        profilePicView.setImageBitmap(decodedBitmap)
+                    } else {
+                        Log.e("profilePic", "Failed to decode Base64 into Bitmap.")
+                    }
+                } catch (e: IllegalArgumentException) {
+                    Log.e("profilePic", "Invalid Base64 string format: ${e.message}")
+                }
             }
         }
 
         title.text = post.title
-        username.text = post.name
+        username.text = if (post.hidename == true) "Anonymous" else post.name
         time.text = TimeUtils.getFormattedDate(post.timestamp)
         description.text = post.text
         joinButton.text = if (post.userId == mainActivity?.userId) "Cannot join to own group!" else when (post.groupStat) {
@@ -154,7 +156,8 @@ class PostDetailFragment : Fragment() {
                         name = jsonObject.getJSONObject("user").getString("name"),
                         timestamp = jsonObject.getString("date"),
                         text = jsonObject.getString("content"),
-                        profilePic = jsonObject.getJSONObject("user").optString("profilePic", null)
+                        profilePic = jsonObject.getJSONObject("user").optString("profilePic", null),
+                        hidename = jsonObject.optBoolean("hidename", false)
                     )
                     msgList.add(forumItem)
                 }

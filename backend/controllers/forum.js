@@ -18,7 +18,7 @@ forumRouter.get("/:id", async (request, response) => {
       .sort({ date: 1 })
       .populate({
         path: "msg",
-        select: "date content id user",
+        select: "date content id user hidename",
         populate: {
           path: "user",
           select: "name profilePic",

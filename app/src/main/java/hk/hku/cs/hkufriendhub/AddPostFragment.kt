@@ -28,6 +28,7 @@ class AddPostFragment : Fragment() {
     private lateinit var hashtag2Input: EditText
     private lateinit var hashtag3Input: EditText
     private lateinit var maxStudentsInput: AutoCompleteTextView
+    private lateinit var hidenameSlider: com.google.android.material.switchmaterial.SwitchMaterial
     private lateinit var submitButton: Button
 
     override fun onCreateView(
@@ -44,6 +45,7 @@ class AddPostFragment : Fragment() {
         hashtag2Input = view.findViewById<EditText>(R.id.addPost_hashtag2)
         hashtag3Input = view.findViewById<EditText>(R.id.addPost_hashtag3)
         maxStudentsInput = view.findViewById<AutoCompleteTextView>(R.id.addPost_gpsize_input)
+        hidenameSlider = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.addPost_hidename)
         submitButton = view.findViewById<Button>(R.id.addPost_submit_button)
 
         setupDropdown()
@@ -107,6 +109,7 @@ class AddPostFragment : Fragment() {
         val title = titleInput.text.toString().trim()
         val content = descriptionInput.text.toString().trim()
         val maxStat = maxStudentsInput.text.toString()
+        val hidename = hidenameSlider.isChecked
 
         if (!inputValidate(title, content)){
             return
@@ -125,6 +128,7 @@ class AddPostFragment : Fragment() {
             payload.put("curstat", 0)
             payload.put("maxstat", if (maxStat == "Unlimited" || maxStat == "") 0 else maxStat.toInt())
             payload.put("user", userId)
+            payload.put("hidename", hidename)
         } catch (e: Exception) {
             Log.e("PostDetail", "Failed to build JSON", e)
             return

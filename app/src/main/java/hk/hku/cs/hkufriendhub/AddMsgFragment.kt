@@ -21,6 +21,7 @@ class AddMsgFragment : Fragment() {
     private var postId: String? = null
     private lateinit var backButton: ImageView
     private lateinit var text: EditText
+    private lateinit var hidenameSlider: com.google.android.material.switchmaterial.SwitchMaterial
     private lateinit var postButton: Button
 
     override fun onCreateView(
@@ -35,6 +36,7 @@ class AddMsgFragment : Fragment() {
         backButton = view.findViewById<ImageView>(R.id.addMsg_back_button)
         text = view.findViewById<EditText>(R.id.addMsg_text_input)
         postButton = view.findViewById<Button>(R.id.addMsg_submit_button)
+        hidenameSlider = view.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.addMsg_hidename)
         postId = arguments?.getString("ID")
 
         backButton.setOnClickListener {
@@ -47,6 +49,7 @@ class AddMsgFragment : Fragment() {
                 requestBody.put("content", text.text.toString())
                 requestBody.put("user", userId)
                 requestBody.put("post", postId)
+                requestBody.put("hidename", hidenameSlider.isChecked)
 
                 postMsg(requestBody)
             }

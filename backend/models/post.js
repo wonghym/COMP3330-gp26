@@ -46,6 +46,10 @@ const postSchema = new mongoose.Schema({
       ref: "Forum",
     },
   ],
+  hidename: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 postSchema.set("toJSON", {
