@@ -20,10 +20,17 @@ frontend - mobile application:<br />
 Click the start button at the top tool bar to start the frontend
 
 <h2>Important (if cloned from github):</h2>
-The ```.env``` file is not included in the repository. To run the backend:
-1. Create a ```.env``` file in the ```backend/``` root directory
-2. Add the variables ```MONGODB_URI``` and ```SECRET``` (for JWT, anything will be fine)
-3. Alternatively, contact me to request the original file
+The `.env` file is not included in the repository. To run the backend:
+
+1. Create a `.env` file in the `backend/` root directory.
+2. Add the variables `MONGODB_URI` and `SECRET` (for JWT, any string will suffice).
+
+   Example content for `.env`:
+
+   ````env
+   MONGODB_URI=your_mongodb_connection_string
+   SECRET=your_jwt_secret_key```
+   ````
 
 <h2>How to use the app:</h2>
 This app consists of 3 parts, forum, chatroom and profile.
