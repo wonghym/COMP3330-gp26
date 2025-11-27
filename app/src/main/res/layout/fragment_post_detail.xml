@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:text="Title"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textSize="28sp"
+                        android:textSize="24sp"
                         android:layout_marginStart="10dp"
                         app:layout_constraintStart_toEndOf="@+id/postDetail_back_button"
                         app:layout_constraintTop_toTopOf="parent"
