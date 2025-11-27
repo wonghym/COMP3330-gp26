@@ -4,9 +4,6 @@ const User = require("../models/user");
 const Post = require("../models/post");
 const Forum = require("../models/forum");
 const fs = require("fs");
-const multer = require("multer");
-
-const upload = multer();
 
 userRouter.get("/", async (request, response) => {
   const users = await User.find({})

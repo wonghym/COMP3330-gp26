@@ -1,6 +1,7 @@
 package hk.hku.cs.hkufriendhub
 
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
+import java.util.concurrent.Executors
 
 class ChatroomDetailFragment : Fragment() {
 
@@ -29,6 +31,9 @@ class ChatroomDetailFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private var userId: String? = null
     private val chatList = ArrayList<ChatModel>()
+
+    val executor = Executors.newSingleThreadExecutor()
+    val handler = android.os.Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +59,7 @@ class ChatroomDetailFragment : Fragment() {
         }
 
         msgSendButton.setOnClickListener {
-            postChat(chatroom.id)
+            executor.execute { handler.post { postChat(chatroom.id) } }
         }
 
         title.text = chatroom.name

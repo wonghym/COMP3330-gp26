@@ -124,7 +124,8 @@
                 android:id="@+id/postDetail_join_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Join (1/4)" />
+                android:text="Join (1/4)"
+                android:backgroundTint="@color/button_color"/>
 
             <View
                 android:id="@+id/divider"
