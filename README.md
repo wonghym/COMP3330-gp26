@@ -27,10 +27,10 @@ The `.env` file is not included in the repository. To run the backend:
 
    Example content for `.env`:
 
-   ````env
+   ```env
    MONGODB_URI=your_mongodb_connection_string
-   SECRET=your_jwt_secret_key```
-   ````
+   SECRET=your_jwt_secret_key (anything)
+   ```
 
 <h2>How to use the app:</h2>
 This app consists of 3 parts, forum, chatroom and profile.
